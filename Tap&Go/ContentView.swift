@@ -15,7 +15,6 @@ struct ContentView: View {
 
     var body: some View {
         ZStack {
-            // Background image covering the full screen
             Image("Bofa_BG")
                 .resizable()
                 .scaledToFill()
@@ -25,7 +24,7 @@ struct ContentView: View {
                 if !isAuthenticated {
                     Spacer()
 
-                    // Message if authentication failed
+                  //issue with alignment
                     if !message.isEmpty {
                         Text(message)
                             .font(.footnote)
@@ -36,7 +35,6 @@ struct ContentView: View {
 
                     Spacer()
 
-                    // Face ID / Passcode Button
                     Button(action: {
                         autoAuthenticate()
                     }) {
@@ -53,7 +51,6 @@ struct ContentView: View {
                 }
                 
                 else {
-                    // Show after authentication
                     VStack(spacing: 10) {
                         Image("BofA2")
                             .resizable()
@@ -126,7 +123,7 @@ struct ContentView: View {
                                           }
                                   }
                               }
-                              .zIndex(2) // Ensure the message view stays on top
+                              .zIndex(2)
 
                               Image("nfc")
                                   .resizable()
@@ -144,14 +141,13 @@ struct ContentView: View {
                     .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .center)
                     .background(Color.white)
                     .cornerRadius(12)
-                    .padding(.bottom, 20) // Adjust the bottom padding to prevent black space
+                    .padding(.bottom, 20)
                 }
             }
         }
         .onAppear(perform: loadUsersFromCSV)
 
     }
-    // Handles Biometric and Passcode Authentication
     func autoAuthenticate() {
         let context = LAContext()
         var error: NSError?
@@ -173,9 +169,9 @@ struct ContentView: View {
         }
     }
 
-    // Matches the NBK with the logged-in user
+    
     func handleAuthenticationSuccess() {
-        let enteredNBK = promptForAuthCode() // Get NBK from user
+        let enteredNBK = promptForAuthCode()
 
         if let matchedUser = users[enteredNBK] {
             userID = enteredNBK
@@ -185,15 +181,11 @@ struct ContentView: View {
             let startDate = matchedUser.4
             let birthday = matchedUser.5
 
-            // Check for Work Anniversary
             if isWorkAnniversary(for: startDate), let years = yearsWorked(from: startDate) {
                 anniversaryMessage = "Happy \(years) Year Work Anniversary! 🏦🎉"
                 showAnniversaryPopup = true
             }
 
-
-
-                   // Check for Birthday
                    showBirthdayPopup = isBirthday(for: birthday)
                } else {
                    isAuthenticated = false
@@ -201,13 +193,12 @@ struct ContentView: View {
                }
            }
 
-    // Simulate user entering NBK (Replace with actual input method)
+    // Demo seleting nbk
     func promptForAuthCode() -> String {
-        return "ZK23903" // Example NBK (Replace with dynamic input)
-       //return "ZK12345" //mahender
+       // return "ZK23903" //sadia
+       return "ZK12345" //mahender
     }
 
-    // Load Users from CSV
     func loadUsersFromCSV() {
         if let filePath = Bundle.main.path(forResource: "Bofa Associates", ofType: "csv") {
             do {
@@ -227,9 +218,9 @@ struct ContentView: View {
                     }
 
                 }
-                print(users)
+                //print(users)
             } catch {
-                print("Error reading CSV file: \(error.localizedDescription)")
+               // print("Error reading CSV file: \(error.localizedDescription)")
 
             }
         }
@@ -325,8 +316,8 @@ struct ContentView: View {
                             .opacity(0.8)
                             .position(
                                 x: CGFloat.random(in: 0..<geometry.size.width),
-                                y: animate ? CGFloat.random(in: -geometry.size.height...geometry.size.height) : -geometry.size.height // Full screen height
-                            ) // Randomize the position across the whole screen vertically
+                                y: animate ? CGFloat.random(in: -geometry.size.height...geometry.size.height) : -geometry.size.height
+                            )
                     }
                 }
                 .scaleEffect(animate ? 1.5 : 0.5) // Explosion animation scale
@@ -350,7 +341,7 @@ struct ContentView: View {
             let todayMonth = calendar.component(.month, from: today)
             let todayDay = calendar.component(.day, from: today)
 
-            print("Birthdate: \(birthMonth)/\(birthDay) - Today's date: \(todayMonth)/\(todayDay)")  // Debugging output
+        //    print("Birthdate: \(birthMonth)/\(birthDay) - Today's date: \(todayMonth)/\(todayDay)")
 
             return birthMonth == todayMonth && birthDay == todayDay
         }
@@ -362,9 +353,9 @@ struct ContentView: View {
         @State private var animate = false
 
         var body: some View {
-            GeometryReader { geometry in // Use GeometryReader to access geometry
+            GeometryReader { geometry in
                 ZStack {
-                    // Confetti Effect
+                    // Confetti
                     ForEach(0..<10, id: \.self) { i in
                         Circle()
                             .foregroundColor([.red, .blue, .green, .yellow, .purple, .pink].randomElement()!)
@@ -411,8 +402,6 @@ struct ContentView: View {
         }
     }
 
-
-    // Retrieve the profile image based on the userID
     func getProfileImage(for id: String) -> Image {
         switch id {
         case "ZK23903":

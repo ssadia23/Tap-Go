@@ -1,0 +1,25 @@
+# Xcode
+*.xcworkspace
+*.xcodeproj
+*.xcuserstate
+DerivedData/
+build/
+
+# Swift Package Manager
+.build/
+Packages/
+.package/
+
+# CocoaPods
+Pods/
+
+# Carthage
+Carthage/
+
+# .DS_Store (MacOS-specific file)
+.DS_Store
+
+# User-specific files
+.idea/
+.vscode/
+
